@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up Form</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+  }
+  .error-message {
+    color: red;
+    margin-top: 5px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Sign Up</h1>
+<div id="errorContainer"></div>
+<form id="signupForm">
+  <div class="form-group">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+  </div>
+  <div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+  </div>
+  <button type="submit">Sign Up</button>
+</form>
+
+<script>
+const signupForm = document.getElementById('signupForm');
+const errorContainer = document.getElementById('errorContainer');
+
+signupForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  const username = signupForm.username.value.trim();
+  const email = signupForm.email.value.trim();
+  const password = signupForm.password.value.trim();
+  
+  const errors = validateForm(username, email, password);
+  
+  if (errors.length === 0) {
+    // If no errors, log the user information
+    console.log('User Information:');
+    console.log('Username:', username);
+    console.log('Email:', email);
+    console.log('Password:', password);
+    // You can send this information to a server for further processing
+  } else {
+    displayErrors(errors);
+  }
+});
+
+function validateForm(username, email, password) {
+  const errors = [];
+  
+  if (username === '') {
+    errors.push('Username is required.');
+  }
+  
+  if (email === '') {
+    errors.push('Email is required.');
+  } else if (!isValidEmail(email)) {
+    errors.push('Invalid email format.');
+  }
+  
+  if (password === '') {
+    errors.push('Password is required.');
+  }
+  
+  return errors;
+}
+
+function isValidEmail(email) {
+  // Simple email validation using regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function displayErrors(errors) {
+  errorContainer.innerHTML = '';
+  errors.forEach(function(error) {
+    const errorMessage = document.createElement('p');
+    errorMessage.textContent = error;
+    errorContainer.appendChild(errorMessage);
+  });
+}
+</script>
+
+</body>
+</html>
